@@ -79,13 +79,32 @@ export default function HomePage() {
     }
   };
 
+  const copyFieldValues = () => {
+    const values = {
+      text: isMultiple ? multipleTexts : text,
+      fontSize: `${fontSize}px`,
+      textColor,
+      backgroundColor,
+      width: `${width}px`,
+      height: `${height}px`,
+    };
+    navigator.clipboard.writeText(JSON.stringify(values, null, 2))
+      .then(() => {
+        alert('Field values copied to clipboard!');
+      })
+      .catch((err) => {
+        console.error('Failed to copy values:', err);
+        alert('Failed to copy values to clipboard');
+      });
+  };
+
   return (
-    <main className="min-h-screen p-8">
+    <div className="min-h-screen p-8">
       <h1 className="font-['Segoe_UI'],_system-ui,_-apple-system,_Helvetica mb-8 text-2xl font-bold tracking-tight">
         Image Generator
       </h1>
       <div className="flex min-h-[calc(100vh-160px)] items-center">
-        <div className="mx-auto w-full max-w-4xl">
+        <main className="mx-auto w-full max-w-4xl">
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
             {/* Preview Box */}
             <div className="inline-block rounded-lg">
@@ -238,16 +257,24 @@ export default function HomePage() {
                   />
                 </div>
               </div>
-              <button
-                onClick={handleDownload}
-                className="w-full rounded bg-blue-600 px-6 py-2 text-white transition-colors hover:bg-blue-700"
-              >
-                Download
-              </button>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <button
+                  onClick={copyFieldValues}
+                  className="flex-1 rounded border-2 border-blue-600 px-6 py-2 text-blue-600 transition-colors hover:bg-blue-100"
+                >
+                  Copy Field Values
+                </button>
+                <button
+                  onClick={handleDownload}
+                  className="flex-1 rounded bg-blue-600 px-6 py-2 text-white transition-colors hover:bg-blue-700"
+                >
+                  Download
+                </button>
+              </div>
             </div>
           </div>
-        </div>
+        </main>
       </div>
-    </main>
+    </div>
   );
 }
